@@ -1,0 +1,161 @@
+/* 1. Grundkonfiguration */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif; 
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 2. NAVIGATION (HEADER) */
+header {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 1rem 5%;
+    width: 100%;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+    white-space: nowrap; /* Verhindert, dass das Logo umbricht */
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px; /* Nutzt modernes Gap statt margin-left für gleichmäßigen Abstand */
+}
+
+nav ul li {
+    margin: 0;
+}
+
+nav ul li a {
+    color: #555;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+    display: inline-block;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    color: #0056b3;
+    border-bottom: 2px solid #0056b3; /* Schicker Unterstrich für den aktiven Link */
+}
+
+/* 2b. RESPONSIVE HEADER (Für Smartphones und schmale Bildschirme) */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column; /* Stapelt Logo und Menü untereinander */
+        gap: 15px;
+        text-align: center;
+    }
+
+    nav ul {
+        width: 100%;
+        justify-content: center; /* Zentriert die Links auf dem Smartphone */
+        flex-wrap: wrap; /* Erlaubt weichen Umbruch, falls es extrem schmal wird */
+        gap: 15px;
+    }
+
+    nav ul li a {
+        font-size: 0.95rem; /* Minimal kleiner auf dem Handy für mehr Platz */
+        padding: 5px 8px;
+        background-color: #f5f5f5; /* Leichter Kachel-Look auf dem Smartphone */
+        border-radius: 4px;
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+        background-color: #e0ebf8;
+        border-bottom: none; /* Auf dem Handy sieht die Hintergrundfarbe sauberer aus */
+    }
+}
+
+/* Hauptinhalt Container */
+.container {
+    background-color: #ffffff;
+    max-width: 800px;
+    width: 90%;
+    margin: 50px auto;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #2c3e50;                    
+    font-size: 2rem;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #2c3e50;
+    font-size: 1.4rem;
+    margin-top: 25px;                  
+    margin-bottom: 10px;               
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1.5rem 5%;
+    background: #333;
+    color: #fff;
+    width: 100%;
+    position: relative;
+    z-index: 1001;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between; /* Copyright links, Links rechts */
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto; /* Zentriert den Inhalt bei sehr breiten Bildschirmen */
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+footer a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Mobile Anpassung */
+@media (max-width: 600px) {
+    .container { padding: 20px; margin: 20px auto; }
+    nav { flex-direction: column; }
+    nav ul { margin-top: 1rem; }
+}

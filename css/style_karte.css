@@ -1,0 +1,385 @@
+/* 1. GLOBALE EINSTELLUNGEN */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Verhindert, dass Padding die Breite sprengt */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; /* Absicherung gegen horizontalen Scrollbalken */
+}
+
+/* 2. NAVIGATION (HEADER) */
+header {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 1rem 5%;
+    width: 100%;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #333;
+    white-space: nowrap; /* Verhindert, dass das Logo umbricht */
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px; /* Nutzt modernes Gap statt margin-left für gleichmäßigen Abstand */
+}
+
+nav ul li {
+    margin: 0;
+}
+
+nav ul li a {
+    color: #555;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 5px 0;
+    display: inline-block;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    color: #0056b3;
+    border-bottom: 2px solid #0056b3; /* Schicker Unterstrich für den aktiven Link */
+}
+
+/* 2b. RESPONSIVE HEADER (Für Smartphones und schmale Bildschirme) */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column; /* Stapelt Logo und Menü untereinander */
+        gap: 15px;
+        text-align: center;
+    }
+
+    nav ul {
+        width: 100%;
+        justify-content: center; /* Zentriert die Links auf dem Smartphone */
+        flex-wrap: wrap; /* Erlaubt weichen Umbruch, falls es extrem schmal wird */
+        gap: 15px;
+    }
+
+    nav ul li a {
+        font-size: 0.95rem; /* Minimal kleiner auf dem Handy für mehr Platz */
+        padding: 5px 8px;
+        background-color: #f5f5f5; /* Leichter Kachel-Look auf dem Smartphone */
+        border-radius: 4px;
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+        background-color: #e0ebf8;
+        border-bottom: none; /* Auf dem Handy sieht die Hintergrundfarbe sauberer aus */
+    }
+}
+
+/* 3. HAUPTBEREICH & KARTE */
+main {
+    flex: 1; /* Füllt den gesamten verfügbaren Raum zwischen Header und Footer */
+    width: 100%;
+    position: relative;
+    background: #eee;
+}
+
+#map {
+    width: 100%;
+    /* Berechnet die Höhe: Vollbild minus Header (~72px) und Footer (~88px) */
+    height: calc(100vh - 160px); 
+    z-index: 1;
+}
+
+/* Fix für Fokus-Rahmen in Leaflet */
+.leaflet-container path {
+    outline: none !important;
+}
+
+path.leaflet-interactive:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* 4. KARTEN-OVERLAYS (Analyse-Highlights & Legende) */
+
+/* Gemeinsame Basis für schwebende Karten-Boxen */
+.map-overlay-card {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.map-overlay-card h3 {
+    margin: 0 0 8px 0;
+    font-size: 0.75rem;
+    color: #0056b3;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Analyse-Highlights (Oben Links) */
+#highlights-content {
+    max-width: 180px;
+    max-height: 35vh;
+    overflow-y: auto;
+}
+
+.button-grid-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.button-grid-vertical button {
+    text-align: left;
+    padding: 5px 8px;
+    font-size: 0.7rem;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.button-grid-vertical button:hover {
+    background: #0056b3;
+    color: white;
+}
+
+/* Legende (Unten Links) */
+.legend-card {
+    max-width: 170px;
+}
+
+.legend-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.legend-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.65rem;
+    color: #333;
+}
+
+.legend-row img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+/* 5. LEAFLET STEUERELEMENTE (Positions-Feinschliff) */
+
+/* Abstand der Box-Gruppen zum Kartenrand */
+.leaflet-top { margin-top: 15px !important; }
+.leaflet-bottom { margin-bottom: 15px !important; }
+.leaflet-left { margin-left: 15px !important; }
+.leaflet-right { margin-right: 15px !important; }
+
+/* TRICK: Setzt Legende und Maßstab nebeneinander statt untereinander */
+.leaflet-bottom.leaflet-left {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-end !important;
+    gap: 15px;
+}
+
+/* 1. Der Container passt sich jetzt exakt dem Text an */
+.leaflet-control-scale {
+    background: rgba(255, 255, 255, 0.95) !important;
+    padding: 24px 10px 8px 10px !important; /* Platz oben für Text, 10px Puffer an den Seiten */
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    position: relative;
+    width: max-content !important;  /* ZWINGT die Box, nur so breit wie das längste Element zu sein */
+    min-width: 110px;               /* Absicherung, falls der Balken beim Rauszoomen sehr klein wird */
+}
+
+/* 2. Die Überschrift "Maßstab" */
+.leaflet-control-scale::before {
+    content: "MAßSTAB";
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #0056b3;
+    letter-spacing: 0.5px;
+    white-space: nowrap; /* Verhindert, dass das Wort umbricht */
+}
+
+/* 3. Styling für die eigentliche Maßstabs-Linie */
+.leaflet-control-scale-line {
+    background: transparent !important;
+    border: 2px solid #333 !important;
+    border-top: none !important;
+    color: #333 !important;
+    font-family: inherit !important;
+    font-weight: bold;
+    padding: 0 3px !important;
+    margin: 0 !important;
+}
+
+/* 6. POP-UPS (Info-Fenster auf der Karte) */
+.modern-popup .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.modern-popup .leaflet-popup-content {
+    margin: 0;
+    width: 220px !important;
+}
+
+.row-total {
+    color: #0056b3;
+    font-weight: bold;
+}
+
+/* 7. FOOTER */
+footer {
+    text-align: center;
+    padding: 0.5rem 5%;
+    background: #333;
+    color: #fff;
+    width: 100%;
+    position: relative;
+    z-index: 1001; /* Liegt über der Leaflet-Karte */
+    margin-top: auto;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+footer a {
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #fff;
+}
+
+@media (max-width: 480px) {
+    .footer-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+/* 8. RESPONSIVE ANPASSUNGEN */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    nav ul li {
+        margin: 0 10px;
+    }
+
+    #highlights-content, .legend-card {
+        max-width: 140px;
+    }
+}
+
+/* 9. WARNHINWEIS MODAL */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75); /* Dunkelt den Hintergrund stark ab */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Muss über dem Header (1000) liegen! */
+}
+
+.modal-content {
+    background: #fff;
+    padding: 25px;            /* Leicht reduzierter Abstand spart Platz */
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;               /* Sorgt dafür, dass links/rechts auf Handys ein kleiner Rand bleibt */
+    
+    /* HIER SIND DIE NEUEN SCROLL-REGELN: */
+    max-height: 85vh;         /* Box darf maximal 85% der Bildschirmlänge einnehmen */
+    overflow-y: auto;         /* Aktiviert die vertikale Scrollbar, falls der Text zu lang ist */
+    
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.modal-content h2 {
+    color: #d9534f; /* Ein auffälliges Warn-Rot (optional) */
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+}
+
+.modal-content p {
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 1rem;
+}
+
+.modal-content button {
+    background: #0056b3;
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.modal-content button:hover {
+    background: #004494;
+}
+
+/* Hilfsklasse zum Ausblenden */
+.hidden {
+    display: none !important;
+}
